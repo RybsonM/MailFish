@@ -1,11 +1,12 @@
 package org.rybson.model;
 
 import javafx.beans.property.SimpleStringProperty;
+import org.rybson.model.table.AbstractTableItem;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EmailMessageBean {
+public class EmailMessageBean extends AbstractTableItem {
 
     public static Map<String, Integer> formattedValues = new HashMap<>();
     private SimpleStringProperty subject;
@@ -13,7 +14,8 @@ public class EmailMessageBean {
     private SimpleStringProperty size;
     private String content;
 
-    public EmailMessageBean(String subject, String sender, int size, String content) {
+    public EmailMessageBean(String subject, String sender, int size, String content, boolean isRead) {
+        super(isRead);
         this.subject = new SimpleStringProperty(subject);
         this.sender = new SimpleStringProperty(sender);
         this.size = new SimpleStringProperty(formatSize(size));
@@ -65,5 +67,15 @@ public class EmailMessageBean {
 
     public SimpleStringProperty sizeProperty() {
         return size;
+    }
+
+    @Override
+    public String toString() {
+        return "EmailMessageBean{" +
+                "subject=" + subject +
+                ", sender=" + sender +
+                ", size=" + size +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

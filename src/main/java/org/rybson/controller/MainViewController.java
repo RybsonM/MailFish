@@ -13,6 +13,8 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import org.rybson.model.EmailMessageBean;
 import org.rybson.model.SampleData;
+import org.rybson.model.folder.EmailFolderBean;
+import org.rybson.model.table.BoldableRowFactor;
 import org.rybson.service.MainViewService;
 import org.rybson.view.ViewFactory;
 
@@ -23,7 +25,6 @@ public class MainViewController extends AbstractController implements Initializa
 
     @FXML
     private TreeView<String> emailFoldersTreeView;
-    private TreeItem<String> root = new TreeItem<>();
     private MenuItem showDetails = new MenuItem("show details");
     @FXML
     private TableView<EmailMessageBean> emailTableView;
@@ -38,45 +39,63 @@ public class MainViewController extends AbstractController implements Initializa
     @FXML
     private Button buttonOne;
 
-    private SampleData dataSample = new SampleData();
-
+    @FXML
+    void changeReadAction() {
+        EmailMessageBean message = getModelAccess().getSelectedMessage();
+        if (message != null) {
+            boolean value = message.isRead();
+            message.setRead(!value);
+            EmailFolderBean<String> selectedFolder = getModelAccess().getSelectedFolder();
+            if (selectedFolder != null) {
+                if (value) {
+                    selectedFolder.incrementUnreadMessagesCount(1);
+                } else {
+                    selectedFolder.decrementUnreadedMessagesCount();
+                }
+            }
+        }
+    }
 
     public MainViewController(ModelAccess modelAccess) {
         super(modelAccess);
     }
 
-    @FXML
-    void buttonOneAction(ActionEvent event) {
-        System.out.println("Clicked");
-    }
     public void initialize(URL location, ResourceBundle resources) {
+        changeReadAction();
+        emailTableView.setRowFactory(e -> new BoldableRowFactor<>());
         ViewFactory viewFactory = ViewFactory.defaultFactory;
         subjectCol.setCellValueFactory(new PropertyValueFactory<>("subject"));
         senderCol.setCellValueFactory(new PropertyValueFactory<>("sender"));
         sizeCol.setCellValueFactory(new PropertyValueFactory("size"));
         MainViewService.sizeComparator();
 
+        EmailFolderBean<String> root = new EmailFolderBean<>("");
         emailFoldersTreeView.setRoot(root);
-        root.setValue("ryba.marcin.test@gmail.com");
-        TreeItem<String> inbox = new TreeItem<>("Inbox", resolveIcon("Inbox"));
-        TreeItem<String> sent = new TreeItem<>("Sent", resolveIcon("Sent"));
-        TreeItem<String> subItemOne = new TreeItem<>("SubItemOne", resolveIcon("Folder"));
-        TreeItem<String> subItemTwo = new TreeItem<>("SubItemTwo", resolveIcon("Folder"));
-        sent.getChildren().addAll(subItemOne, subItemTwo);
-        TreeItem<String> spam = new TreeItem<>("Spam", resolveIcon("Spam"));
-        TreeItem<String> trash = new TreeItem<>("Trash", resolveIcon("Trash"));
+        emailFoldersTreeView.setShowRoot(false);
 
-        root.getChildren().addAll(inbox, sent, spam, trash);
+        EmailFolderBean<String> user = new EmailFolderBean<>("ryba.marcin20@gmail.com");
+        root.getChildren().add(user);
+        EmailFolderBean<String> inbox = new EmailFolderBean<>("Inbox", "ComplateInbox");
+        EmailFolderBean<String> sent = new EmailFolderBean<>("Sent", "ComplateSent");
+        sent.getChildren().add(new EmailFolderBean<>("SubFolder1", "SubFolder1Complate"));
+        sent.getChildren().add(new EmailFolderBean<>("SubFolder2", "SubFolder2Complate"));
+        EmailFolderBean<String> spam = new EmailFolderBean<>("Spam", "ComplateSpam");
 
-        root.setValue("ryba.marcin.test@gmail.com");
-        root.setGraphic(resolveIcon(root.getValue()));
-        root.setExpanded(true);
+        root.getChildren().addAll(inbox, sent, spam);
+
+        inbox.getData().addAll(SampleData.Inbox);
+        sent.getData().addAll(SampleData.Sent);
+        spam.getData().addAll(SampleData.Spam);
+
+
         emailTableView.setContextMenu(new ContextMenu(showDetails));
 
         emailFoldersTreeView.setOnMouseClicked(e -> {
-            TreeItem<String> item = emailFoldersTreeView.getSelectionModel().getSelectedItem();
-            if (item != null) {
-                emailTableView.setItems(dataSample.emailFolders.get(item.getValue()));
+            EmailFolderBean<String> item = (EmailFolderBean<String>) emailFoldersTreeView.getSelectionModel().getSelectedItem();
+            if (item != null && item.isTopElement()) {
+                emailTableView.setItems(item.getData());
+                getModelAccess().setSelectedFolder(item);
+                getModelAccess().setSelectedMessage(null);
             }
         });
         emailTableView.setOnMouseClicked(e -> {
@@ -94,32 +113,5 @@ public class MainViewController extends AbstractController implements Initializa
 
             System.out.println("menu item clicked");
         });
-    }
-
-    private Node resolveIcon(String treeItemValue) {
-        String lowerCaseTreeItemValue = treeItemValue.toLowerCase();
-        ImageView returnIcon;
-        try {
-            if (lowerCaseTreeItemValue.contains("inbox"))
-                returnIcon = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("images/inbox.png")));
-            else if (lowerCaseTreeItemValue.contains("sent"))
-                returnIcon = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("images/sent2.png")));
-            else if (lowerCaseTreeItemValue.contains("spam"))
-                returnIcon = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("images/spam.png")));
-            else if (lowerCaseTreeItemValue.contains("@"))
-                returnIcon = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("images/email.png")));
-
-            else if (lowerCaseTreeItemValue.contains("trash"))
-                returnIcon = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("images/folder.png")));
-            else
-                returnIcon = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("images/folder.png")));
-        } catch (NullPointerException e) {
-            System.out.println("Invalid image location");
-            e.printStackTrace();
-            return new ImageView();
-        }
-        returnIcon.setFitHeight(16);
-        returnIcon.setFitWidth(16);
-        return returnIcon;
     }
 }

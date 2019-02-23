@@ -1,0 +1,15 @@
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/model/SampleData.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/controller/ModelAccess.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/controller/MainViewController.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/service/MainViewService.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/model/EmailConstants.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/App.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/model/table/BoldableRowFactor.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/model/folder/EmailFolderBean.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/view/ViewFactory.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/model/EmailMessageBean.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/model/EmailAccountBean.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/TestApp.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/controller/AbstractController.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/controller/EmailDetailsController.java
+/home/rybsonm/IdeaProjects/MailFish/src/main/java/org/rybson/model/table/AbstractTableItem.java
