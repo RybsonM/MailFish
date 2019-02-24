@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import org.rybson.controller.services.CreateAndRegisterEmailAccountService;
 import org.rybson.model.EmailMessageBean;
 import org.rybson.model.SampleData;
 import org.rybson.model.folder.EmailFolderBean;
@@ -64,35 +65,24 @@ public class MainViewController extends AbstractController implements Initializa
         changeReadAction();
         emailTableView.setRowFactory(e -> new BoldableRowFactor<>());
         ViewFactory viewFactory = ViewFactory.defaultFactory;
-        subjectCol.setCellValueFactory(new PropertyValueFactory<>("subject"));
-        senderCol.setCellValueFactory(new PropertyValueFactory<>("sender"));
-        sizeCol.setCellValueFactory(new PropertyValueFactory("size"));
+        subjectCol.setCellValueFactory(new PropertyValueFactory<>("Subject"));
+        senderCol.setCellValueFactory(new PropertyValueFactory<>("Sender"));
+        sizeCol.setCellValueFactory(new PropertyValueFactory("Size"));
         MainViewService.sizeComparator();
 
         EmailFolderBean<String> root = new EmailFolderBean<>("");
         emailFoldersTreeView.setRoot(root);
         emailFoldersTreeView.setShowRoot(false);
 
-        EmailFolderBean<String> user = new EmailFolderBean<>("ryba.marcin20@gmail.com");
-        root.getChildren().add(user);
-        EmailFolderBean<String> inbox = new EmailFolderBean<>("Inbox", "ComplateInbox");
-        EmailFolderBean<String> sent = new EmailFolderBean<>("Sent", "ComplateSent");
-        sent.getChildren().add(new EmailFolderBean<>("SubFolder1", "SubFolder1Complate"));
-        sent.getChildren().add(new EmailFolderBean<>("SubFolder2", "SubFolder2Complate"));
-        EmailFolderBean<String> spam = new EmailFolderBean<>("Spam", "ComplateSpam");
-
-        root.getChildren().addAll(inbox, sent, spam);
-
-        inbox.getData().addAll(SampleData.Inbox);
-        sent.getData().addAll(SampleData.Sent);
-        spam.getData().addAll(SampleData.Spam);
-
+        CreateAndRegisterEmailAccountService createAndRegisterEmailAccountService =
+                new CreateAndRegisterEmailAccountService("marcin.ryba20.test@gmail.com", "marcin.ryb@20", root, getModelAccess());
+        createAndRegisterEmailAccountService.start();
 
         emailTableView.setContextMenu(new ContextMenu(showDetails));
 
         emailFoldersTreeView.setOnMouseClicked(e -> {
             EmailFolderBean<String> item = (EmailFolderBean<String>) emailFoldersTreeView.getSelectionModel().getSelectedItem();
-            if (item != null && item.isTopElement()) {
+            if (item != null && !item.isTopElement()) {
                 emailTableView.setItems(item.getData());
                 getModelAccess().setSelectedFolder(item);
                 getModelAccess().setSelectedMessage(null);

@@ -7,19 +7,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="656.0" prefWidth="1282.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="656.0"
+            prefWidth="1282.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Button fx:id="buttonOne" layoutX="25.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
-        <Button layoutX="107.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
-        <Button layoutX="188.0" layoutY="14.0" mnemonicParsing="false" onAction="#changeReadAction" text="ChangeRead" />
-        <TreeView fx:id="emailFoldersTreeView" layoutX="-1.0" layoutY="55.0" prefHeight="460.0" prefWidth="217.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="55.0" />
-        <TableView fx:id="emailTableView" layoutX="227.0" layoutY="55.0" prefHeight="191.0" prefWidth="637.0" AnchorPane.leftAnchor="227.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="55.0">
+        <Button fx:id="buttonOne" layoutX="25.0" layoutY="14.0" mnemonicParsing="false" text="Button"/>
+        <Button layoutX="107.0" layoutY="14.0" mnemonicParsing="false" text="Button"/>
+        <Button layoutX="188.0" layoutY="14.0" mnemonicParsing="false" onAction="#changeReadAction" text="ChangeRead"/>
+        <TreeView fx:id="emailFoldersTreeView" layoutX="-1.0" layoutY="55.0" prefHeight="460.0" prefWidth="217.0"
+                  AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="55.0"/>
+        <TableView fx:id="emailTableView" layoutX="227.0" layoutY="55.0" prefHeight="191.0" prefWidth="637.0"
+                   AnchorPane.leftAnchor="227.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="55.0">
             <columns>
-                <TableColumn fx:id="subjectCol" prefWidth="212.0" text="Subject" />
-                <TableColumn fx:id="senderCol" minWidth="0.0" prefWidth="341.0" text="Sender" />
-                <TableColumn fx:id="sizeCol" minWidth="0.0" prefWidth="121.0" text="Size" />
+                <TableColumn fx:id="subjectCol" prefWidth="212.0" text="Subject"/>
+                <TableColumn fx:id="senderCol" minWidth="0.0" prefWidth="341.0" text="Sender"/>
+                <TableColumn fx:id="sizeCol" minWidth="0.0" prefWidth="121.0" text="Size"/>
             </columns>
         </TableView>
-        <WebView fx:id="messageRenderer" layoutX="227.0" layoutY="246.0" prefHeight="278.0" prefWidth="637.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="227.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="246.0" />
+        <WebView fx:id="messageRenderer" layoutX="227.0" layoutY="246.0" prefHeight="278.0" prefWidth="637.0"
+                 AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="227.0" AnchorPane.rightAnchor="0.0"
+                 AnchorPane.topAnchor="246.0"/>
     </children>
 </AnchorPane>

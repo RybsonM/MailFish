@@ -6,6 +6,10 @@ import javafx.scene.control.TreeItem;
 import org.rybson.model.EmailMessageBean;
 import org.rybson.view.ViewFactory;
 
+import javax.mail.Flags;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+
 public class EmailFolderBean<T> extends TreeItem<String> {
 
     private boolean topElement = false;
@@ -47,12 +51,6 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         updateValue();
     }
 
-    public void addEmail(EmailMessageBean message) {
-        data.add(message);
-        if (!message.isRead()) {
-            incrementUnreadMessagesCount(1);
-        }
-    }
 
     public boolean isTopElement() {
         return topElement;
@@ -60,5 +58,23 @@ public class EmailFolderBean<T> extends TreeItem<String> {
 
     public ObservableList<EmailMessageBean> getData() {
         return data;
+    }
+
+    public void addEmail(int possition, Message message) throws MessagingException {
+        boolean isRead = message.getFlags().contains(Flags.Flag.SEEN);
+        EmailMessageBean emailMessageBean = new EmailMessageBean(message.getSubject(),
+                message.getFrom()[0].toString(),
+                message.getSize(),
+                "",
+                isRead);
+        if (possition < 0) {
+            data.add(emailMessageBean);
+        } else {
+            data.add(possition, emailMessageBean);
+        }
+        if (!isRead) {
+            incrementUnreadMessagesCount(1);
+        }
+
     }
 }
